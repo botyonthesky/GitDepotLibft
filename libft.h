@@ -17,12 +17,30 @@
 # include <string.h>
 # include <stddef.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <stdarg.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+
+# endif
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct s_listg
+{
+	char			*content;
+	struct s_listg	*next;
+}				t_listg;
+
+/*----------------------LIBFT-----------------------------*/
 
 int		ft_atoi(const char *nptr);
 void	ft_bzero(void *s, size_t n);
@@ -67,5 +85,33 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+
+/*---------------------------------PRINTF------------------------------------------*/
+
+int	ft_printf(const char *format, ...);
+int	ft_put_memory_adress(void *ptr);
+int	ft_putchar_p(char c);
+int	ft_putnbr_p(int n);
+int	ft_putstr_p(char *str);
+int	ft_check_char(char c, va_list format);
+int	ft_short_p(va_list format);
+int	ft_short_u(va_list format);
+int	ft_short_x(va_list format);
+int	ft_short_gx(va_list format);
+char	*ft_convert(unsigned int x, char *set);
+
+/*---------------------------------GNL----------------------------------------------*/
+
+char	*get_next_line(int fd);
+void	ft_read_and_store_data(int fd, t_listg **stash);
+void	ft_insert_to_stash(t_listg **stash, char *tmp, int bytes_read);
+void	ft_build_final_line(t_listg *stash, char **line);
+void	ft_line_size(t_listg *stash, char **line);
+void	ft_clean(t_listg **stash);
+void	ft_free_gnl(t_listg *stash);
+int		ft_is_newline(t_listg *stash);
+t_listg	*ft_get_last(t_listg *stash);
+int		ft_strlen_gnl(const char *s);
+
 
 #endif
